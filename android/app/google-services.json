@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "323363797529",
+    "project_id": "timecapsule-9af15",
+    "storage_bucket": "timecapsule-9af15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323363797529:android:f8d2446a3c452d4ad90888",
+        "android_client_info": {
+          "package_name": "com.example.projects"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9qtwuu86cSJbLMR7tXflNcMB0h9rN8No"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
