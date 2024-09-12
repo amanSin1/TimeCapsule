@@ -29,7 +29,7 @@ class CreateCapsuleScreen extends StatelessWidget {
             const SizedBox(height: 20.0),
             TextField(
               controller: controller.bodyTextController,
-              maxLines: 4,
+              maxLines: 40,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter capsule body',

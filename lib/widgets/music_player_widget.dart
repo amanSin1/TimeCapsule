@@ -1,13 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class MusicPlayerWidget extends StatelessWidget {
+class MusicPlayerWidget extends StatefulWidget {
   final String musicUrl;
 
   const MusicPlayerWidget({super.key, required this.musicUrl});
 
   @override
+  _MusicPlayerWidgetState createState() => _MusicPlayerWidgetState();
+}
+
+class _MusicPlayerWidgetState extends State<MusicPlayerWidget> {
+  late AudioPlayer _audioPlayer;
+  bool _isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _playPauseAudio() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play(UrlSource(widget.musicUrl));
+    }
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Replace this with your preferred audio player widget
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -17,12 +48,10 @@ class MusicPlayerWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Play Audio'),
+          Text(_isPlaying ? 'Playing Audio' : 'Play Audio'),
           IconButton(
-            icon: const Icon(Icons.play_arrow),
-            onPressed: () {
-              // Logic to play audio from URL
-            },
+            icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+            onPressed: _playPauseAudio,
           ),
         ],
       ),
