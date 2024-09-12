@@ -1,34 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'create_capsule_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final user = FirebaseAuth.instance.currentUser;
- signOut() async {
-   await FirebaseAuth.instance.signOut();
- }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HomeScreen"),
-
+        title: const Text('Time Capsule'),
+        centerTitle: true,
+        actions: [
+          Tooltip(
+            message: 'Create New Capsule',  // Text to show on hover
+            child: IconButton(
+              onPressed: () {
+                // Navigate to the Create Capsule Screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  CreateCapsuleScreen()),
+                );
+              },
+              icon: const Icon(Icons.create),
+            ),
+          ),
+        ],
       ),
-      body: Center(
-        child: Text('${user!.email}'),
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: ( () => signOut()),
-        child: Icon(Icons.login_rounded),
-      ),
-
     );
   }
 }
