@@ -66,6 +66,22 @@ class CreateCapsuleScreen extends StatelessWidget {
                 ),
               ),
             ),
+
+            const SizedBox(height: 20.0),
+            Obx(() => controller.selectedMusic.value == null
+                ? ElevatedButton.icon(
+              onPressed: controller.pickMusic,
+              icon: const Icon(Icons.music_note),
+              label: const Text('Pick a Music File'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.red,
+              ),
+            )
+                : Text(
+              'Selected Music: ${controller.selectedMusic.value!.path.split('/').last}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            )),
             const SizedBox(height: 20.0),
             Obx(
                   () => controller.isLoading.value

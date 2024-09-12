@@ -26,7 +26,12 @@ class FirebaseService {
   }
 
   // Upload the capsule data with the username
-  static Future<void> uploadCapsule({required String title,required String body, required File? imageFile}) async {
+  static Future<void> uploadCapsule({
+    required String title,
+    required String body,
+    required File? imageFile,
+    required File? musicFile
+  }) async {
     final user = _auth.currentUser;
     if (user == null) {
       throw Exception('User not logged in');
@@ -45,14 +50,22 @@ class FirebaseService {
         final uploadTask = await storageRef.putFile(imageFile);
         imageUrl = await uploadTask.ref.getDownloadURL();
       }
+      // Upload the music file to Firebase Storage (if present) and get the URL
+      String? musicUrl;
+      if (musicFile != null) {
+        final musicStorageRef = FirebaseStorage.instance.ref().child('capsules/${user.uid}/music/${DateTime.now().millisecondsSinceEpoch}');
+        final musicUploadTask = await musicStorageRef.putFile(musicFile);
+        musicUrl = await musicUploadTask.ref.getDownloadURL();
+      }
 
       // Store capsule data in Firestore
       await _firestore.collection('capsules').add({
         'userId': user.uid,
         'username': username,
         'title': title,
-        'body' : body,
+        'body': body,
         'imageUrl': imageUrl,
+        'musicUrl': musicUrl, // Store the music URL
         'timestamp': FieldValue.serverTimestamp(),
       });
     } catch (e) {
