@@ -37,17 +37,19 @@ class HomeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
               ),
-              child: const Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              child: Center(
+                child: const Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
                 ),
               ),
             ),
             ListTile(
               leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+              title: const Text('S E T T I N G S'),
               onTap: () {
                 // Navigate to the Settings screen
                 Navigator.pop(context); // Close the drawer
@@ -56,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.save),
-              title: const Text('View Saved Capsules'),
+              title: const Text('S A V E D  C A P S U L E S'),
               onTap: () {
                 // Navigate to the View Saved Capsules screen
                 Navigator.pop(context); // Close the drawer

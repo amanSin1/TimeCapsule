@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'capsule_detail_screen.dart';
+
 class ViewSavedCapsuleScreen extends StatelessWidget {
   ViewSavedCapsuleScreen({super.key});
 
@@ -44,8 +46,17 @@ class ViewSavedCapsuleScreen extends StatelessWidget {
                     : 'No date available'),
                 trailing: const Icon(Icons.arrow_forward),
                 onTap: () {
+                  // Convert the QueryDocumentSnapshot to Map<String, dynamic>
+                  final capsuleData = capsule.data() as Map<String, dynamic>;
+
                   // Navigate to the detailed view screen
-                  // For now, you can print the capsule details
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CapsuleDetailScreen(capsuleData: capsuleData),
+                    ),
+                  );
+
                   print('Capsule ID: ${capsule.id}');
                 },
               );
