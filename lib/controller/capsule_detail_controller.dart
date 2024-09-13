@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projects/screens/contacts_screen.dart';
 
 class CapsuleDetailController extends GetxController {
   var capsuleData = <String, dynamic>{}.obs;
@@ -9,6 +12,8 @@ class CapsuleDetailController extends GetxController {
 
   void editCapsule() {
     // Handle the edit logic here
+
+    Get.to(() => ContactsScreen());
     print('Edit capsule');
   }
 
