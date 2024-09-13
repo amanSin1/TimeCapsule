@@ -1,12 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/capsule_detail_controller.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../widgets/music_player_widget.dart';
-class CapsuleDetailScreen extends StatelessWidget {
-  final CapsuleDetailController controller;
+import 'contacts_screen.dart';
 
-  CapsuleDetailScreen({super.key, required Map<String, dynamic> capsuleData})
-      : controller = Get.put(CapsuleDetailController(capsuleData));
+class CapsuleDetailScreen extends StatefulWidget {
+  final Map<String, dynamic> capsuleData;
+
+  const CapsuleDetailScreen({super.key, required this.capsuleData});
+
+  @override
+  _CapsuleDetailScreenState createState() => _CapsuleDetailScreenState();
+}
+
+class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
+  late Map<String, dynamic> capsuleData; // State variable to store capsule data
+
+  @override
+  void initState() {
+    super.initState();
+    capsuleData = widget.capsuleData; // Initialize with the provided data
+  }
+
+  void editCapsule() {
+    // Handle edit logic here
+    // You might navigate to an edit page or open a dialog to edit capsule details
+    print('Edit capsule');
+  }
+
+  void deleteCapsule() {
+    // Handle delete logic here
+    print('Delete capsule');
+  }
+
+  void shareCapsule() {
+    // Handle share logic here
+    Get.to(() => ContactsScreen(capsuleData: capsuleData,));
+    print('Share capsule');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +50,13 @@ class CapsuleDetailScreen extends StatelessWidget {
             onSelected: (String choice) {
               switch (choice) {
                 case 'Edit':
-                  controller.editCapsule();
+                  editCapsule();
                   break;
                 case 'Delete':
-                  controller.deleteCapsule();
+                  deleteCapsule();
                   break;
                 case 'Share':
-                  controller.shareCapsule();
+                  shareCapsule();
                   break;
               }
             },
@@ -43,66 +74,70 @@ class CapsuleDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Obx(
-              () => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Center(
+              child: Text(
+                capsuleData['title'] ?? 'No Title',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8.0),
+
+            // Username and Timestamp
+            Center(
+              child: Text(
+                'By ${capsuleData['username'] ?? 'Unknown User'} on ${capsuleData['timestamp'] != null ? capsuleData['timestamp'].toDate().toLocal().toString() : 'No Date Available'}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+
+            // Body Content
+            Text(
+              capsuleData['body'] ?? 'No Content',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16.0),
+
+            // Image with error handling
+            if (capsuleData['imageUrl'] != null)
               Center(
-                child: Text(
-                  controller.capsuleData['title'] ?? 'No Title',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Image.network(
+                  capsuleData['imageUrl'],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.broken_image),
+                  loadingBuilder: (context, child, progress) {
+                    if (progress == null) return child;
+                    return const CircularProgressIndicator();
+                  },
                 ),
               ),
-              const SizedBox(height: 8.0),
+            const SizedBox(height: 16.0),
 
-              // Username and Timestamp
-              Center(
-                child: Text(
-                  'By ${controller.capsuleData['username'] ?? 'Unknown User'} on ${controller.capsuleData['timestamp'] != null ? controller.capsuleData['timestamp'].toDate().toLocal().toString() : 'No Date Available'}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
+            // Music Player
+            if (capsuleData['musicUrl'] != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Audio:',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
+                  const SizedBox(height: 8.0),
+                  MusicPlayerWidget(musicUrl: capsuleData['musicUrl']),
+                ],
               ),
-              const SizedBox(height: 16.0),
-
-              // Body Content
-              Text(
-                controller.capsuleData['body'] ?? 'No Content',
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16.0),
-
-              // Image
-              if (controller.capsuleData['imageUrl'] != null)
-                Center(
-                  child: Image.network(
-                    controller.capsuleData['imageUrl'],
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              const SizedBox(height: 16.0),
-
-              // Music Player
-              if (controller.capsuleData['musicUrl'] != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Audio:',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8.0),
-                    MusicPlayerWidget(musicUrl: controller.capsuleData['musicUrl']),
-                  ],
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );
