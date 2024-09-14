@@ -30,7 +30,8 @@ class FirebaseService {
     required String title,
     required String body,
     required File? imageFile,
-    required File? musicFile
+    required File? musicFile,
+    DateTime? revealDate,
   }) async {
     final user = _auth.currentUser;
     if (user == null) {
@@ -67,6 +68,7 @@ class FirebaseService {
         'imageUrl': imageUrl,
         'musicUrl': musicUrl, // Store the music URL
         'timestamp': FieldValue.serverTimestamp(),
+        'revealDate': revealDate != null ? Timestamp.fromDate(revealDate) : null,
       });
     } catch (e) {
       throw Exception('Error uploading capsule: $e');

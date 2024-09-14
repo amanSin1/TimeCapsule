@@ -15,6 +15,8 @@ class CapsuleController extends GetxController {
   var selectedImage = Rxn<File>(); // Reactive variable for the image
   var selectedMusic = Rxn<File>(); // Selected music file
   var isLoading = false.obs; // Reactive variable for loading state
+  var revealDate = Rxn<DateTime>();// Reactive variable for reveal date
+
 
   final ImagePicker _picker = ImagePicker();
 
@@ -41,6 +43,21 @@ class CapsuleController extends GetxController {
     }
   }
 
+
+  // Method to pick the reveal date
+  Future<void> pickRevealDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(), // Disable past dates
+      lastDate: DateTime(2100), // Set a far future date as max
+    );
+
+    if (pickedDate != null) {
+      revealDate.value = pickedDate;
+    }
+  }
+
   // Method to save the capsule
   Future<void> saveCapsule() async {
     if (titleTextController.text.isEmpty && selectedImage.value == null) {
@@ -54,6 +71,11 @@ class CapsuleController extends GetxController {
       return;
     }
 
+    if (revealDate.value == null) {
+      Get.snackbar('Error', 'Please set a reveal date');
+      return;
+    }
+
     isLoading.value = true;
 
     try {
@@ -62,6 +84,7 @@ class CapsuleController extends GetxController {
         body: bodyTextController.text,
         imageFile: selectedImage.value,
         musicFile: selectedMusic.value, // Save music file as well
+        revealDate: revealDate.value,
       );
 
       Get.snackbar('Success', 'Capsule saved successfully!');

@@ -26,7 +26,14 @@ class ContactsScreen extends StatelessWidget {
                   : () async {
                 // Send the capsule to selected contacts
                 await _sendCapsuleToSelectedContacts(context);
-                Get.snackbar('Success', 'Capsule shared successfully!');
+                // Show Snackbar on successful sharing
+                Get.snackbar(
+                  'Success',
+                  'Capsule shared successfully!',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                );
                 Navigator.pop(context);
               },
             );
@@ -92,6 +99,17 @@ class ContactsScreen extends StatelessWidget {
       String body = capsuleData['body'] ?? 'No body content available';
       String? imageUrl = capsuleData['imageUrl'];
       String? musicUrl = capsuleData['musicUrl'];
+      var revealDate = capsuleData['revealDate'];
+
+      // Convert revealDate to Timestamp if it's not already a Timestamp
+      Timestamp? revealTimestamp;
+      if (revealDate != null) {
+        if (revealDate is Timestamp) {
+          revealTimestamp = revealDate;
+        } else if (revealDate is DateTime) {
+          revealTimestamp = Timestamp.fromDate(revealDate);
+        }
+      }
 
       // Set the capsule data in Firestore for the contact
       batch.set(capsuleRef, {
@@ -101,6 +119,7 @@ class ContactsScreen extends StatelessWidget {
         'timestamp': FieldValue.serverTimestamp(),
         if (imageUrl != null) 'imageUrl': imageUrl,
         if (musicUrl != null) 'musicUrl': musicUrl,
+        if (revealTimestamp != null) 'revealDate': revealTimestamp,
         // Add any other fields you want to include from capsuleData
       });
     }
@@ -108,5 +127,4 @@ class ContactsScreen extends StatelessWidget {
     // Commit the batch write to Firestore
     await batch.commit();
   }
-
 }
