@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:projects/screens/AddContactsScreen.dart';
 import 'package:projects/screens/recieved_capsule_detail_screen.dart';
 import 'package:projects/screens/view_saved_capsule_screen.dart';
-import 'capsule_detail_screen.dart';
 import 'create_capsule_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+
+   HomeScreen({super.key});
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -35,11 +35,41 @@ class HomeScreen extends StatelessWidget {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
   }
 
-  @override
+   final String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+   Future<String?> getCurrentUserName() async {
+     // Get the current user document from Firestore
+     final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+
+     // Check if the document exists and return the username, otherwise return null
+     if (userDoc.exists) {
+       return userDoc.data()?['username'];
+     }
+     return null; // Return null if the user does not exist
+   }
+
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Time Capsule'),
+        title: FutureBuilder<String?>(
+          future: getCurrentUserName(), // Fetch username
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Loading...'); // While loading, show 'Loading...'
+            }
+
+            if (snapshot.hasError) {
+              return const Text('Error'); // If there is an error, show 'Error'
+            }
+
+            final String? userName = snapshot.data; // Get the fetched username
+
+            // Show username if available, otherwise show 'User'
+            return Text(userName != null ? 'Welcome, $userName!' : 'User');
+          },
+        ),
         centerTitle: true,
         actions: [
           IconButton(
