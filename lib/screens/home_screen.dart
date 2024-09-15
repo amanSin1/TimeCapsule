@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:projects/screens/AddContactsScreen.dart';
+import 'package:projects/screens/recieved_capsule_detail_screen.dart';
 import 'package:projects/screens/view_saved_capsule_screen.dart';
 import 'capsule_detail_screen.dart';
 import 'create_capsule_screen.dart';
@@ -188,7 +189,7 @@ class HomeScreen extends StatelessWidget {
         currentDate.isAtSameMomentAs(revealDate)) {
       // Navigate to the detail screen to show the capsule's content
       Get.to(() =>
-          CapsuleDetailScreen(capsuleData: capsule.data() as Map<String, dynamic>));
+      RecievedCapsuleDetailScreen());
     } else {
       // Show a snackbar or dialog saying the capsule is not yet revealed
       Get.snackbar(

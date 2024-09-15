@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -6,8 +7,9 @@ import 'contacts_screen.dart';
 
 class CapsuleDetailScreen extends StatefulWidget {
   final Map<String, dynamic> capsuleData;
+  final String capsuleId;
 
-  const CapsuleDetailScreen({super.key, required this.capsuleData});
+   CapsuleDetailScreen({super.key, required this.capsuleData, required this.capsuleId});
 
   @override
   _CapsuleDetailScreenState createState() => _CapsuleDetailScreenState();
@@ -15,6 +17,7 @@ class CapsuleDetailScreen extends StatefulWidget {
 
 class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
   late Map<String, dynamic> capsuleData; // State variable to store capsule data
+
 
   @override
   void initState() {
@@ -28,11 +31,36 @@ class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
     print('Edit capsule');
   }
 
-  void deleteCapsule() {
-    // Handle delete logic here
-    print('Delete capsule');
-  }
+  void deleteCapsule() async {
+    try {
+      // Deleting the capsule from Firebase Firestore using widget.capsuleId
+      await FirebaseFirestore.instance
+          .collection('capsules')
+          .doc(widget.capsuleId) // Access capsuleId via widget
+          .delete();
 
+      // Show snackbar on successful deletion
+      Get.snackbar(
+        'Deleted',
+        'Capsule has been successfully deleted!',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+
+      // Navigate back to the previous screen
+      Navigator.pop(context);
+    } catch (e) {
+      // Show error snackbar if deletion fails
+      Get.snackbar(
+        'Error',
+        'Failed to delete capsule: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
   void shareCapsule() {
     // Handle share logic here
     Get.to(() => ContactsScreen(capsuleData: capsuleData,));

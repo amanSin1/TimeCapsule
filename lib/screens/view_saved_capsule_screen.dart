@@ -37,6 +37,7 @@ class ViewSavedCapsuleScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final capsule = capsules[index];
               final title = capsule['title'];
+              final String capsuleId = capsule.id;
               final timestamp = capsule['timestamp']?.toDate();
 
               return ListTile(
@@ -53,7 +54,7 @@ class ViewSavedCapsuleScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CapsuleDetailScreen(capsuleData: capsuleData),
+                      builder: (context) => CapsuleDetailScreen(capsuleData: capsuleData, capsuleId: capsuleId,),
                     ),
                   );
 
