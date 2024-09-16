@@ -1,9 +1,7 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projects/pages/signup_page.dart';
-
 import 'forgot.dart';
 
 class LoginPage extends StatefulWidget {
@@ -52,107 +50,124 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("W E L C O M E", style: TextStyle(fontStyle: FontStyle.italic),),
+        title: Text(""),
+        backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
         centerTitle: true,
-        backgroundColor: Colors.grey, // Change the background color
       ),
       body: Container(
         padding: EdgeInsets.all(16),
-        color: Colors.black,
+        color: isDarkMode ? Colors.black12 : Colors.white,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the content
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Descriptive Text
+            Text(
+              'Welcome to Time Capsule! Sign in to explore your memories and create new ones.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                color: isDarkMode ? Colors.white70 : Colors.black87,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Email TextField
             TextField(
               controller: email,
-              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Enter email',
-                hintStyle: TextStyle(color: Colors.white), // Hint text color
+                hintStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54),
                 border: OutlineInputBorder(
-
-                    borderRadius: BorderRadius.circular(50.0),
-                    borderSide: const BorderSide(color: Colors.white)
-                  // Rounded corners
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(19.0),
-                  borderSide: BorderSide(color: Colors.teal), // Border color when enabled
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide(color: Colors.teal),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.teal, width: 2.0), // Border color on focus
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide(color: Colors.teal, width: 2.0),
                 ),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 20),
+
+            // Password TextField
             TextField(
               controller: password,
-              style: TextStyle(color: Colors.white),
               obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Enter password',
-                hintStyle: TextStyle(color: Colors.white), // Hint text color
+                hintStyle: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                    borderSide: BorderSide(color: Colors.white)// Rounded corners
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(19.0),
-                  borderSide: BorderSide(color: Colors.teal), // Border color when enabled
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide(color: Colors.teal),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.teal, width: 2.0), // Border color on focus
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide(color: Colors.teal, width: 2.0),
                 ),
               ),
             ),
             SizedBox(height: 20),
+
+            // Login Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: signIn,
                 style: ElevatedButton.styleFrom(
-
-                  backgroundColor: Colors.teal, // Button color
+                  backgroundColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0), // Rounded corners
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0), // Button padding
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
                 ),
                 child: Text(
                   "Login",
-                  style: TextStyle(fontSize: 16.0,color: Colors.white),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Get.to(const SignupPage()),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal[700], // Button color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0), // Rounded corners
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0), // Button padding
-                ),
-                child: Text(
-                  "Register now",
                   style: TextStyle(fontSize: 16.0, color: Colors.white),
                 ),
               ),
             ),
             SizedBox(height: 20),
+
+            // Register Button
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: () => Get.to(const SignupPage()),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.teal, shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                 // backgroundColor: isDarkMode ? Colors.grey[800] : Colors.teal[100], // Background color for TextButton
+                ),
+                child: Text(
+                  "New user? Register now",
+                  style: TextStyle(fontSize: 16.0, color: Colors.teal),
+                ),
+              ),
+            ),
+
+
+            // Forgot Password Button
             TextButton(
               onPressed: () => Get.to(const Forgot()),
               style: TextButton.styleFrom(
-                foregroundColor: Colors.teal, textStyle: TextStyle(fontSize: 16.0),
+                foregroundColor: Colors.teal,
+                textStyle: TextStyle(fontSize: 16.0),
               ),
-              child: Text("Forget password",),
+              child: Text("Forgot password"),
             ),
           ],
         ),

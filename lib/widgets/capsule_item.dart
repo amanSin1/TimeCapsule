@@ -118,17 +118,7 @@ class CapsuleItem extends StatelessWidget {
             const SizedBox(height: 16.0),
 
             // Cool Button with Ripple Effect and Animated Color
-            AnimatedButton(
-              onPressed: () {
-                // Handle button press
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('View More Details'),
-                  ),
-                );
-              },
-              child: const Text("View Details"),
-            ),
+
           ],
         ),
       ),

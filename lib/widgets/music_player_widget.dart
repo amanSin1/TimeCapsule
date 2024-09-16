@@ -42,7 +42,7 @@ class _MusicPlayerWidgetState extends State<MusicPlayerWidget> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Row(

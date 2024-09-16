@@ -107,9 +107,11 @@ class _RecievedCapsuleDetailScreenState extends State<RecievedCapsuleDetailScree
                         position: Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero).animate(_controller),
                         child: Column(
                           children: [
-                            Text(
-                              "Congratulations! You've unlocked a capsule!",
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            Center(
+                              child: Text(
+                                "Congratulations! You've unlocked a capsule!",
+                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
                             ),
                             SizedBox(height: 40),
                             ElevatedButton(

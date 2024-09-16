@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text(
                   'Menu',
                   style: TextStyle(
-                    color: Colors.white,
+                   // color: Colors.white,
                     fontSize: 24,
                   ),
                 ),
@@ -187,7 +187,7 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.all(3),
                     margin: EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+
                       border: Border.all(
                         color: Colors.transparent,
                         width: 1.0,

@@ -35,7 +35,7 @@ class AddContactsScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     margin: const EdgeInsets.only(top: 10.0),
                     decoration: BoxDecoration(
-                      color: Colors.greenAccent,
+
                       border: Border.all(
                         color: Colors.transparent,
                         width: 1.0,
@@ -48,12 +48,16 @@ class AddContactsScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 20),
                       ),
                       trailing: ElevatedButton(
+
                         onPressed: () {
                           context
                               .read<ContactsBloc>()
                               .add(AddContactEvent(userId, userName));
                         },
-                        child: const Text('Add'),
+                        child: const Text('Add',style: TextStyle(color: Colors.yellow),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red
+                        ),
                       ),
                     ),
                   );
