@@ -10,7 +10,7 @@ import 'create_capsule_screen.dart';
 
 class HomeScreen extends StatelessWidget {
 
-   HomeScreen({super.key});
+  HomeScreen({super.key});
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -35,21 +35,21 @@ class HomeScreen extends StatelessWidget {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
   }
 
-   final String? userId = FirebaseAuth.instance.currentUser?.uid;
+  final String? userId = FirebaseAuth.instance.currentUser?.uid;
 
-   Future<String?> getCurrentUserName() async {
-     // Get the current user document from Firestore
-     final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+  Future<String?> getCurrentUserName() async {
+    // Get the current user document from Firestore
+    final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
 
-     // Check if the document exists and return the username, otherwise return null
-     if (userDoc.exists) {
-       return userDoc.data()?['username'];
-     }
-     return null; // Return null if the user does not exist
-   }
+    // Check if the document exists and return the username, otherwise return null
+    if (userDoc.exists) {
+      return userDoc.data()?['username'];
+    }
+    return null; // Return null if the user does not exist
+  }
 
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
             final String? userName = snapshot.data; // Get the fetched username
 
             // Show username if available, otherwise show 'User'
-            return Text(userName != null ? 'Welcome, $userName!' : 'User');
+            return Text(userName != null ? '👋, $userName!' : 'User',style: TextStyle(fontWeight:FontWeight.bold),);
           },
         ),
         centerTitle: true,
@@ -163,6 +163,7 @@ class HomeScreen extends StatelessWidget {
               final senderId = capsule['senderId'] as String;
               final timestamp = capsule['timestamp'] as Timestamp;
               final revealDate = (capsule['revealDate'] as Timestamp?)?.toDate();
+              final title = capsule['title'];
 
               return FutureBuilder<String>(
                 future: _getSenderName(senderId),
@@ -182,12 +183,38 @@ class HomeScreen extends StatelessWidget {
 
                   final senderName = senderSnapshot.data ?? 'Unknown Sender';
 
-                  return ListTile(
-                    title: Text(senderName),
-                    subtitle: Text(_formatTimestamp(timestamp)),
-                    onTap: () {
-                      _handleCapsuleTap(context, doc, revealDate);
-                    },
+                  return Container(
+                    padding: EdgeInsets.all(3),
+                    margin: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: ListTile(
+                      leading: GestureDetector(
+                        onTap: (){},
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          radius: 24,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 24, // Adjust the size as needed
+                          ),
+                        ),
+
+                      ),
+                      title: Text(senderName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      subtitle: Text(title),
+                      trailing: Text(_formatTimestamp(timestamp)),
+                      onTap: () {
+                        _handleCapsuleTap(context, doc, revealDate,senderName);
+                      },
+                    ),
                   );
                 },
               );
@@ -210,7 +237,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _handleCapsuleTap(
-      BuildContext context, DocumentSnapshot capsule, DateTime? revealDate) {
+      BuildContext context, DocumentSnapshot capsule, DateTime? revealDate, String senderName) {
     DateTime currentDate = DateTime.now();
 
     // Check if the current date is after or equal to the reveal date
@@ -219,7 +246,7 @@ class HomeScreen extends StatelessWidget {
         currentDate.isAtSameMomentAs(revealDate)) {
       // Navigate to the detail screen to show the capsule's content
       Get.to(() =>
-      RecievedCapsuleDetailScreen());
+          RecievedCapsuleDetailScreen(capsule: capsule, senderName: senderName,));
     } else {
       // Show a snackbar or dialog saying the capsule is not yet revealed
       Get.snackbar(

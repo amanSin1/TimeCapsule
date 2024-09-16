@@ -167,7 +167,7 @@ class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
               ),
           ],
         ),
-      ),
+      )
     );
   }
 }
