@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
 
-import 'package:projects/widgets/capsule_item.dart'; // Import the new details page
+import '../widgets/capsule_item.dart';
 
 class RecievedCapsuleDetailScreen extends StatefulWidget {
   final dynamic capsule;

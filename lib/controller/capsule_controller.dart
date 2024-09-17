@@ -1,5 +1,3 @@
-// capsule_controller.dart
-
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +13,7 @@ class CapsuleController extends GetxController {
   var selectedImage = Rxn<File>(); // Reactive variable for the image
   var selectedMusic = Rxn<File>(); // Selected music file
   var isLoading = false.obs; // Reactive variable for loading state
-  var revealDate = Rxn<DateTime>();// Reactive variable for reveal date
-
+  var revealDate = Rxn<DateTime>(); // Reactive variable for reveal date
 
   final ImagePicker _picker = ImagePicker();
 
@@ -38,24 +35,28 @@ class CapsuleController extends GetxController {
       type: FileType.audio,
     );
 
-    if (result != null && result.files.single.path != null  && selectedMusic.value == null) {
+    if (result != null && result.files.single.path != null) {
       selectedMusic.value = File(result.files.single.path!);
     }
   }
 
+  // Method to clear the image
+  void clearImage() {
+    selectedImage.value = null;
+  }
 
-  // Method to pick the reveal date
-  Future<void> pickRevealDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(), // Disable past dates
-      lastDate: DateTime(2100), // Set a far future date as max
-    );
+  // Method to clear the music file
+  void clearMusic() {
+    selectedMusic.value = null;
+  }
 
-    if (pickedDate != null) {
-      revealDate.value = pickedDate;
-    }
+  // Method to clear all capsule data
+  void clearCapsule() {
+    titleTextController.clear();
+    bodyTextController.clear();
+    selectedImage.value = null;
+    selectedMusic.value = null;
+    revealDate.value = null;
   }
 
   // Method to save the capsule
@@ -88,10 +89,7 @@ class CapsuleController extends GetxController {
       );
 
       Get.snackbar('Success', 'Capsule saved successfully!');
-      titleTextController.clear();
-      bodyTextController.clear();
-      selectedImage.value = null;
-      selectedMusic.value = null;
+      clearCapsule(); // Clear all fields after saving
     } catch (e) {
       Get.snackbar('Error', 'Error: $e');
     } finally {

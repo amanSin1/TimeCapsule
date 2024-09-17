@@ -73,8 +73,7 @@ class CapsuleItem extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
 
-            // Image with Interactive Viewer and Hero Animation
-            if (capsule['imageUrl'] != null)
+            if (capsule['imageUrl'] != null && capsule['imageUrl'].isNotEmpty)
               Center(
                 child: GestureDetector(
                   onTap: () => Navigator.push(
@@ -99,11 +98,18 @@ class CapsuleItem extends StatelessWidget {
                     ),
                   ),
                 ),
+              ) else  Center(
+              child: Text(
+                'No image Available',
+                style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
               ),
+            ),
+
             const SizedBox(height: 16.0),
 
-            // Music Player
-            if (capsule['musicUrl'] != null)
+
+
+            if (capsule['musicUrl'] != null && capsule['musicUrl'].isNotEmpty)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -114,6 +120,13 @@ class CapsuleItem extends StatelessWidget {
                   const SizedBox(height: 8.0),
                   MusicPlayerWidget(musicUrl: capsule['musicUrl']),
                 ],
+              )
+            else
+              Center(
+                child: Text(
+                  'No Audio Available',
+                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                ),
               ),
             const SizedBox(height: 16.0),
 

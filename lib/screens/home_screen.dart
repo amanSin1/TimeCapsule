@@ -1,13 +1,13 @@
+import 'package:Time_Capsule/screens/recieved_capsule_detail_screen.dart';
+import 'package:Time_Capsule/screens/view_saved_capsule_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:projects/screens/AddContactsScreen.dart';
-import 'package:projects/screens/recieved_capsule_detail_screen.dart';
-import 'package:projects/screens/view_saved_capsule_screen.dart';
 
 import '../screens/create_capsule_screen.dart';
+import 'AddContactsScreen.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -242,7 +242,7 @@ class HomeScreen extends StatelessWidget {
                         subtitle: Text(title),
                         trailing: Text(_formatTimestamp(timestamp)),
                         onTap: () {
-                          _handleCapsuleTap(context, doc, revealDate, senderName);
+                          _handleCapsuleTap(context, capsule, revealDate, senderName);
                         },
                       ),
                     ),
@@ -269,7 +269,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _handleCapsuleTap(
-      BuildContext context, DocumentSnapshot capsule, DateTime? revealDate, String senderName) {
+      BuildContext context, Map<String,dynamic> capsule, DateTime? revealDate, String senderName) {
     DateTime currentDate = DateTime.now();
 
     // Check if the current date is after or equal to the reveal date

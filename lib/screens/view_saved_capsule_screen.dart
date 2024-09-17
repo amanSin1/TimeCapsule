@@ -50,15 +50,21 @@ class ViewSavedCapsuleScreen extends StatelessWidget {
                   // Convert the QueryDocumentSnapshot to Map<String, dynamic>
                   final capsuleData = capsule.data() as Map<String, dynamic>;
 
-                  // Navigate to the detailed view screen
+                  // Ensure that missing fields are handled gracefully
+
+                  // Navigate to the detailed view screen with the capsule data
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CapsuleDetailScreen(capsuleData: capsuleData, capsuleId: capsuleId,),
+                      builder: (context) => CapsuleDetailScreen(
+                        capsuleData: capsuleData,
+                        capsuleId: capsuleId,
+
+                      ),
                     ),
                   );
 
-                  print('Capsule ID: ${capsule.id}');
+                  print('Capsule ID: $capsuleId');
                 },
               );
             },

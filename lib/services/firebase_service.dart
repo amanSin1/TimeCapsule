@@ -51,6 +51,7 @@ class FirebaseService {
         final uploadTask = await storageRef.putFile(imageFile);
         imageUrl = await uploadTask.ref.getDownloadURL();
       }
+
       // Upload the music file to Firebase Storage (if present) and get the URL
       String? musicUrl;
       if (musicFile != null) {
@@ -59,19 +60,29 @@ class FirebaseService {
         musicUrl = await musicUploadTask.ref.getDownloadURL();
       }
 
-      // Store capsule data in Firestore
-      await _firestore.collection('capsules').add({
+      // Prepare data to store in Firestore
+      Map<String, dynamic> capsuleData = {
         'userId': user.uid,
         'username': username,
         'title': title,
         'body': body,
-        'imageUrl': imageUrl,
-        'musicUrl': musicUrl, // Store the music URL
         'timestamp': FieldValue.serverTimestamp(),
         'revealDate': revealDate != null ? Timestamp.fromDate(revealDate) : null,
-      });
+      };
+
+      // Conditionally add the imageUrl and musicUrl to Firestore if they are not null
+      if (imageUrl != null) {
+        capsuleData['imageUrl'] = imageUrl;
+      }
+      if (musicUrl != null) {
+        capsuleData['musicUrl'] = musicUrl;
+      }
+
+      // Store capsule data in Firestore
+      await _firestore.collection('capsules').add(capsuleData);
     } catch (e) {
       throw Exception('Error uploading capsule: $e');
     }
   }
+
 }

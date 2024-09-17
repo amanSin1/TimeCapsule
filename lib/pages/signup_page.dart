@@ -1,8 +1,9 @@
+import 'package:Time_Capsule/pages/wrapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // If you still want to use GetX for some parts
-import 'package:projects/pages/wrapper.dart';
+
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});

@@ -1,7 +1,7 @@
+import 'package:Time_Capsule/pages/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projects/pages/signup_page.dart';
 import 'forgot.dart';
 
 class LoginPage extends StatefulWidget {
