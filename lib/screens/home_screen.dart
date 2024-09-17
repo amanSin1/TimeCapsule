@@ -6,7 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:projects/screens/AddContactsScreen.dart';
 import 'package:projects/screens/recieved_capsule_detail_screen.dart';
 import 'package:projects/screens/view_saved_capsule_screen.dart';
-import 'create_capsule_screen.dart';
+
+import '../screens/create_capsule_screen.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -96,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text(
                   'Menu',
                   style: TextStyle(
-                   // color: Colors.white,
+                    // color: Colors.white,
                     fontSize: 24,
                   ),
                 ),
@@ -194,27 +195,58 @@ class HomeScreen extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(25),
                     ),
-                    child: ListTile(
-                      leading: GestureDetector(
-                        onTap: (){},
-                        child: CircleAvatar(
+                    child: GestureDetector(
+                      onLongPress: () {
+                        // Show confirmation dialog on long press
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Delete Capsule'),
+                              content: Text('Are you sure you want to delete this capsule?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    // Close the dialog
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // Confirm deletion and close the dialog
+                                    _deleteCapsule(doc.id);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Yes'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
                           backgroundColor: Colors.grey,
                           radius: 24,
                           child: Icon(
                             Icons.person,
                             color: Colors.white,
-                            size: 24, // Adjust the size as needed
+                            size: 24,
                           ),
                         ),
-
+                        title: Text(
+                          senderName,
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(title),
+                        trailing: Text(_formatTimestamp(timestamp)),
+                        onTap: () {
+                          _handleCapsuleTap(context, doc, revealDate, senderName);
+                        },
                       ),
-                      title: Text(senderName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                      subtitle: Text(title),
-                      trailing: Text(_formatTimestamp(timestamp)),
-                      onTap: () {
-                        _handleCapsuleTap(context, doc, revealDate,senderName);
-                      },
                     ),
+
                   );
                 },
               );
@@ -257,6 +289,26 @@ class HomeScreen extends StatelessWidget {
         colorText: Colors.white,
         duration: const Duration(seconds: 3), // Ensure duration is set
       );
+    }
+  }
+
+  Future<void> _deleteCapsule(String capsuleId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('receivedCapsules')
+          .doc(capsuleId)
+          .delete();
+      Get.snackbar('Deleted', 'Capsule has been deleted',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to delete capsule: $e',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     }
   }
 }
