@@ -1,4 +1,5 @@
 import 'package:Time_Capsule/pages/signup_page.dart';
+import 'package:Time_Capsule/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
         email: email.text,
         password: password.text,
       );
+      Get.offAll(() =>  HomeScreen());
       Get.snackbar("Success", "You have successfully signed in!",
           snackPosition: SnackPosition.BOTTOM);
     } on FirebaseAuthException catch (e) {

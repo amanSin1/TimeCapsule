@@ -2,7 +2,8 @@ import 'package:Time_Capsule/pages/wrapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // If you still want to use GetX for some parts
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // If you still want to use GetX for some parts
 
 
 class SignupPage extends StatefulWidget {
@@ -34,6 +35,10 @@ class _SignupPageState extends State<SignupPage> {
         'username': username.text,
       });
 
+      // Set a flag for new user
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isNewUser', true); // Indicate this is a new user
+
       // Navigate to the Wrapper page
       Get.offAll(() => const Wrapper());
 
@@ -61,6 +66,7 @@ class _SignupPageState extends State<SignupPage> {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:Time_Capsule/pages/login_page.dart';
 import 'package:Time_Capsule/screens/recieved_capsule_detail_screen.dart';
 import 'package:Time_Capsule/screens/view_saved_capsule_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut(); // Sign out from Firebase Auth
+      Get.offAll(() => const LoginPage());
     } catch (e) {
       Get.snackbar('Error', 'Failed to sign out: $e');
     }
@@ -284,9 +286,9 @@ class HomeScreen extends StatelessWidget {
       Get.snackbar(
         'Capsule Locked',
         'This capsule will be revealed on ${DateFormat.yMMMd().format(revealDate)}.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
-        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+       // colorText: Colors.white,
         duration: const Duration(seconds: 3), // Ensure duration is set
       );
     }

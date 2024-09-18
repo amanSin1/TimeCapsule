@@ -1,4 +1,5 @@
 import 'package:Time_Capsule/pages/wrapper.dart';
+import 'package:Time_Capsule/screens/on_boarding_screen.dart';
 import 'package:Time_Capsule/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
