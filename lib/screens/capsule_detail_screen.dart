@@ -25,11 +25,11 @@ class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
     capsuleData = widget.capsuleData; // Initialize with the provided data
   }
 
-  void editCapsule() {
-    // Handle edit logic here
-    // You might navigate to an edit page or open a dialog to edit capsule details
-    print('Edit capsule');
-  }
+  // void editCapsule() {
+  //   // Handle edit logic here
+  //   // You might navigate to an edit page or open a dialog to edit capsule details
+  //   print('Edit capsule');
+  // }
 
   void deleteCapsule() async {
     try {
@@ -77,9 +77,9 @@ class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
           PopupMenuButton<String>(
             onSelected: (String choice) {
               switch (choice) {
-                case 'Edit':
-                  editCapsule();
-                  break;
+                // case 'Edit':
+                //   editCapsule();
+                //   break;
                 case 'Delete':
                   deleteCapsule();
                   break;
@@ -89,7 +89,7 @@ class _CapsuleDetailScreenState extends State<CapsuleDetailScreen> {
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Edit', 'Delete', 'Share'}.map((String choice) {
+              return {'Delete', 'Share'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),

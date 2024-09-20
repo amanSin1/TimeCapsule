@@ -72,7 +72,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       onPressed: () async {
                         // Save the flag to SharedPreferences
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool('hasSeenOnboarding', true);
+                        await prefs.setBool('hasSeenOnboarding', false);
 
                         // Navigate to HomeScreen
                         Navigator.pushReplacement(

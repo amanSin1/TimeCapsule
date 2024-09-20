@@ -19,33 +19,41 @@ class _WrapperState extends State<Wrapper> {
   @override
   void initState() {
     super.initState();
-    checkIfNewUser(); // Added to check if user is new
   }
 
-  Future<void> checkIfNewUser() async {
+  // Function to check if the user has seen the onboarding screen
+  Future<bool> checkIfNewUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isNewUser = prefs.getBool('isNewUser') ?? true;
-    });
+    return prefs.getBool('isNewUser') ?? true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (isNewUser) {
-              return OnboardingScreen(); // Navigate to onboarding if user is new
-            } else {
-              return HomeScreen(); // Navigate to HomeScreen if user is returning
-            }
-          } else {
-            return const LoginPage(); // If user is not logged in
-          }
-        },
-      ),
+    return FutureBuilder<bool>(
+      future: checkIfNewUser(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          // Show a loading indicator while waiting for the SharedPreferences check
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          bool isNewUser = snapshot.data!; // Get the result of the future
+
+          return StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, authSnapshot) {
+              if (authSnapshot.hasData) {
+                if (isNewUser) {
+                  return const OnboardingScreen(); // Navigate to onboarding if the user is new
+                } else {
+                  return HomeScreen(); // Navigate to HomeScreen if the user has already seen onboarding
+                }
+              } else {
+                return const LoginPage(); // If the user is not logged in
+              }
+            },
+          );
+        }
+      },
     );
   }
 }
